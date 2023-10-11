@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:04:59 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/11 16:41:46 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:30:31 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,32 @@ void	clean_temp(char **temp)
 	*temp = out;
 }
 
-char	*clean_next_line(char *line)
+char	*clean_next_line(char **temp, int r)
 {
 	size_t	i;
 	char	*out;
 
-	if (!line)
+	if (!*temp)
 		return (NULL);
 	i = 0;
-	while (line[i] && line[i] != '\n')
+	while ((*temp)[i] && (*temp)[i] != '\n')
 		i++;
-	if (line[i] == '\n')
+	if ((*temp)[i] == '\n')
 		i++;
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
 		return (NULL);
 	i = 0;
-	while (line[i] && line[i] != '\n')
+	while ((*temp)[i] && (*temp)[i] != '\n')
 	{
-		out[i] = line[i];
+		out[i] = (*temp)[i];
 		i++;
 	}
-	if (line[i] == '\n')
+	if ((*temp)[i] == '\n')
 		out[i++] = '\n';
 	out[i] = '\0';
+	if (r == 0)
+		*temp = NULL;
 	return (out);
 }
 
@@ -80,44 +82,53 @@ char	*get_next_line(int fd)
 	{
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
-			return (NULL); //free
+			return (free_function(temp, buffer));
 		r = read(fd, buffer, BUFFER_SIZE);
 		if (r == -1)
-			return (NULL); //free
+			return (free_function(temp, buffer));
 		if (r == 0)
 			break ;
 		buffer[r] = '\0';
+		// printf("buffer: %s\n", buffer);
 		if (!temp)
 			temp = ft_strdup(buffer);
 		else
 			temp = ft_strjoin(temp, buffer);
+		if (!temp)
+			return (free_function(temp, buffer));
 		buffer = NULL;
 		if (ft_strchr(temp, '\n'))
 			break ;
 	}
 	if (buffer)
 		free(buffer);
-	if (r == 0 && ft_strlen(temp) == 0)
-		return (NULL);
-	return (clean_next_line(temp));
+	return (clean_next_line(&temp, r));
 }
 
+void	leakschecker(void)
+{
+	system("leaks -q a.out");  
+}
 
 
 int	main(void)
 {
 	int fd = open("test.txt", O_RDONLY);
 	char *out = get_next_line(fd);
-	printf(";%s;\n", out);
+	printf("Newline: %s\n", out);
 	out = get_next_line(fd);
-	printf(";%s;\n", out);
+	printf("Newline: %s\n", out);
 	out = get_next_line(fd);
-	printf(";%s;\n", out);
+	printf("Newline: %s\n", out);
 	out = get_next_line(fd);
-	printf(";%s;\n", out);
+	printf("Newline: %s\n", out);
 	out = get_next_line(fd);
-	printf(";%s;\n", out);
+	printf("Newline: %s\n", out);
+	out = get_next_line(fd);
+	printf("Newline: %s\n", out);
 	if (out)
 		free(out);
 	close(fd);
+	atexit(leakschecker);
 }
+

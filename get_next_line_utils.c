@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:01:54 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/11 16:38:35 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:59:21 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strjoin(char *dst, char *src)
 
 	out = malloc((ft_strlen(dst) + ft_strlen(src) + 1) * sizeof(char));
 	if (!out)
-		return (NULL);
+		return (free_function(dst, src));
 	i = 0;
 	j = 0;
 	while (dst[i])
@@ -55,10 +55,7 @@ char	*ft_strjoin(char *dst, char *src)
 	while (src[i])
 		out[j++] = src[i++];
 	out[j] = '\0';
-	if (dst)
-		free(dst);
-	if (src)
-		free(src);
+	free_function(dst, src);
 	return (out);
 }
 
@@ -71,7 +68,11 @@ char	*ft_strdup(char *s)
 		return (NULL);
 	out = malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!out)
+	{
+		if (s)
+			free(s);
 		return (NULL);
+	}
 	i = 0;
 	while (s[i])
 	{
@@ -84,10 +85,11 @@ char	*ft_strdup(char *s)
 	return (out);
 }
 
-void	free_function(char *temp, char *buf)
+char	*free_function(char *temp, char *buf)
 {
 	if (temp)
 		free(temp);
 	if (buf)
 		free(buf);
+	return (NULL);
 }
