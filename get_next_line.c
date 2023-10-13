@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 13:15:55 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/13 13:19:40 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*clean_temp(char *temp)
 	int		i;
 	int		j;
 
+	if (!temp)
+		return (NULL);
 	i = 0;
 	while (temp[i] && temp[i] != '\n')
 		i++;
@@ -36,8 +38,6 @@ char	*clean_temp(char *temp)
 	}
 	out[j] = '\0';
 	free_function(temp, NULL, 1);
-	// if (!temp)
-	// 	return (free_function(out, NULL, 1));
 	return (out);
 }
 
