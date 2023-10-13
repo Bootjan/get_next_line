@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:47:51 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:52:32 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	clean_temp(char **temp, char **str)
 	char	*out;
 	int		len;
 	int		i;
+	int		j;
 
 	if (!*temp)
 	{
@@ -80,47 +81,50 @@ char	*next_line(char **temp)
 	return (out);
 }
 
-char	*compute_buffer(char **temp, int fd, int *r)
-{
-	char	*buffer;
-
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (free_function(temp));
-	*r = read(fd, buffer, BUFFER_SIZE);
-	if (*r == -1)
-	{
-		free_function(&buffer);
-		return (free_function(temp));
-	}
-	if (*r == 0 && !*temp)
-		return (free_function(&buffer));
-	if (*r == 0)
-		return (NULL);
-	buffer[*r] = '\0';
-	return (buffer);
-}
-
 char	*get_next_line(int fd)
 {
+	int			r;
 	char		*buffer;
 	static char	*temp;
-	int			r;
-	
+
 	r = 1;
 	while (r)
 	{
-		buffer = compute_buffer(&temp, fd, &r);
+		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
-			return (NULL);
+			return (free_function(&temp));
+		compute_buffer(&temp, &buffer);
+		r = read(fd, buffer, BUFFER_SIZE);
+		if (r == -1)
+		{
+			free_function(&buffer);
+			return (free_function(&temp));
+		}
+		if (r == 0 && !temp)
+			return (free_function(&buffer));
+		if (r == 0)
+			break ;
+		buffer[r] = '\0';
 		if (!temp)
 			temp = ft_strdup(&buffer);
 		else
 			temp = ft_strjoin(&temp, &buffer);
-		if (ft_strchr(temp, '\n') >= 0)
+		if (ft_strchr(temp, '\n'))
 			break ;
 	}
 	if (buffer)
 		free(buffer);
 	return (next_line(&temp));
 }
+// #include <stdio.h>
+// int	main()
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	char *next_line = get_next_line(fd);
+// 	printf("Next line: %s:\n", next_line);
+// 	next_line = get_next_line(fd);
+// 	printf("Next line: %s:\n", next_line);
+// 	if (next_line)
+// 		free(next_line);
+// 	close(fd);
+// }
