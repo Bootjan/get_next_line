@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:27:35 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:32:36 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ char	*get_next_line(int fd)
 			return (NULL);
 		buffer[r] = '\0';
 		if (!temp)
-			temp = ft_strdup(&buffer);
+			temp = ft_strdup(&buffer, r);
 		else
-			temp = ft_strjoin(&temp, &buffer);
+			temp = ft_strjoin(&temp, &buffer, r);
 		if (ft_strchr(temp, '\n'))
 			break ;
 	}
@@ -130,15 +130,3 @@ char	*get_next_line(int fd)
 		free(buffer);
 	return (next_line(&temp));
 }
-// #include <stdio.h>
-// int	main()
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	char *next_line = get_next_line(fd);
-// 	printf("Next line: %s:\n", next_line);
-// 	next_line = get_next_line(fd);
-// 	printf("Next line: %s:\n", next_line);
-// 	if (next_line)
-// 		free(next_line);
-// 	close(fd);
-// }

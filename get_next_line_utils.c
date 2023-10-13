@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:04:39 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:32:02 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ char	*free_function(char **str)
 	return (NULL);
 }
 
-char	*ft_strdup(char **buffer)
+char	*ft_strdup(char **buffer, int r)
 {
 	char	*out;
 	int		i;
 
-	out = malloc((ft_strlen(*buffer) + 1) * sizeof(char));
+	out = malloc((r + 1) * sizeof(char));
 	if (!out)
 		return (free_function(buffer));
 	i = 0;
@@ -53,13 +53,13 @@ char	*ft_strdup(char **buffer)
 	return (out);
 }
 
-char	*ft_strjoin(char **temp, char **buffer)
+char	*ft_strjoin(char **temp, char **buffer, int r)
 {
 	char	*out;
 	int		i;
 	int		j;
 
-	out = malloc((ft_strlen(*temp) + ft_strlen(*buffer) + 1) * sizeof(char));
+	out = malloc((ft_strlen(*temp) + r + 1) * sizeof(char));
 	if (!out)
 	{
 		free_function(buffer);

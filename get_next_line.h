@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:44:27 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:32:32 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h> // remove when turning in
 
 size_t	ft_strlen(const char *s);
-char	*ft_strdup(char **buffer);
-char	*ft_strjoin(char **dst, char **src);
+char	*ft_strdup(char **buffer, int r);
+char	*ft_strjoin(char **dst, char **src, int r);
 int		ft_strchr(const char *dst, char c);
 char	*get_next_line(int fd);
 char	*free_function(char **str);
