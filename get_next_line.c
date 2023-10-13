@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:00:54 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:02:55 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	clean_temp(char **temp, char **str)
 		return ;
 	}
 	len = ft_strlen(*temp);
-	i = len - ft_strchr(*temp, '\n');
+	i = len - ft_strchr(*temp, '\n') - 1;
 	if (i == len)
 	{
 		free_function(temp);
