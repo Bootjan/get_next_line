@@ -6,35 +6,18 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:59:15 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:00:54 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*compute_return_value(char **temp, int len, int i)
-{
-	char	*out;
-	size_t	j;
-
-	out = malloc((len - i + 1) * sizeof(char));
-	if (!out)
-	{
-		free_function(temp);
-		return (NULL);
-	}
-	j = 0;
-	while ((*temp)[i])
-		out[j++] = (*temp)[i++];
-	out[j] = '\0';
-	return (out);
-}
 
 void	clean_temp(char **temp, char **str)
 {
 	char	*out;
 	int		len;
 	int		i;
+	int		j;
 
 	if (!*temp)
 	{
@@ -48,9 +31,16 @@ void	clean_temp(char **temp, char **str)
 		free_function(temp);
 		return ;
 	}
-	out = compute_return_value(temp, len, i);
+	out = malloc((len - i + 1) * sizeof(char));
 	if (!out)
+	{
+		free_function(temp);
 		return ;
+	}
+	j = 0;
+	while ((*temp)[i])
+		out[j++] = (*temp)[i++];
+	out[j] = '\0';
 	free(*temp);
 	*temp = out;
 }
