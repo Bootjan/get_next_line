@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:14:08 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:27:35 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,6 @@ char	*compute_buffer(char **temp, int fd, int *r)
 	}
 	if (*r == 0 && !*temp)
 		return (free_function(&buffer));
-	if (*r == 0)
-		return (free_function(temp));
-	buffer[*r] = '\0';
 	return (buffer);
 }
 
@@ -117,8 +114,11 @@ char	*get_next_line(int fd)
 	while (r)
 	{
 		buffer = compute_buffer(&temp, fd, &r);
+		if (r == 0)
+			break ;
 		if (!buffer)
 			return (NULL);
+		buffer[r] = '\0';
 		if (!temp)
 			temp = ft_strdup(&buffer);
 		else
