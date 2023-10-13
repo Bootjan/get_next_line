@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/12 14:09:13 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:23:10 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
+# include <fcntl.h> // remove when turning in
 
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(char *buffer);

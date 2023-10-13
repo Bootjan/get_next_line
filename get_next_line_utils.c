@@ -6,7 +6,7 @@
 /*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 13:15:37 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/13 13:26:21 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ char	*free_function(char *str1, char *str2, int n)
 {
 	if (n > 0 && str1)
 		free(str1);
+	str1 = NULL;
 	if (n > 1 && str2)
 		free(str2);
+	str2 = NULL;
 	return (NULL);
 }
 
