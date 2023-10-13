@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:07:59 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:08:46 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	clean_temp(char **temp, char **str)
 		free_function(str);
 		return ;
 	}
+	i = 0;
 	while ((*temp)[i] && (*temp)[i] != '\n')
 		i++;
 	if ((*temp)[i] == '\n')
