@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:55:39 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:58:07 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*compute_return_value(char **temp, int len, int i)
 	if (!out)
 	{
 		free_function(temp);
-		return (NULL);
+		return ;
 	}
 	j = 0;
 	while ((*temp)[i])
