@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:08:46 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:11:54 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,27 @@ char	*next_line(char **temp)
 	return (out);
 }
 
+char	*compute_buffer(char **temp, int fd, int *r)
+{
+	char	*buffer;
+
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (free_function(temp));
+	*r = read(fd, buffer, BUFFER_SIZE);
+	if (*r == -1)
+	{
+		free_function(&buffer);
+		return (free_function(temp));
+	}
+	if (*r == 0 && !*temp)
+		return (free_function(&buffer));
+	if (*r == 0)
+		return (NULL);
+	buffer[*r] = '\0';
+	return (buffer);
+}
+
 char	*get_next_line(int fd)
 {
 	int			r;
@@ -95,20 +116,9 @@ char	*get_next_line(int fd)
 	r = 1;
 	while (r)
 	{
-		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+		buffer = compute_buffer(&temp, fd, &r);
 		if (!buffer)
-			return (free_function(&temp));
-		r = read(fd, buffer, BUFFER_SIZE);
-		if (r == -1)
-		{
-			free_function(&buffer);
-			return (free_function(&temp));
-		}
-		if (r == 0 && !temp)
-			return (free_function(&buffer));
-		if (r == 0)
-			break ;
-		buffer[r] = '\0';
+			return (NULL);
 		if (!temp)
 			temp = ft_strdup(&buffer);
 		else
