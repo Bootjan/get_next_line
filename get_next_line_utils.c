@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:41:11 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:44:13 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,12 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*free_function(char **str1, char **str2, int n)
+char	*free_function(char **str)
 {
-	if (n > 0 && *str1)
-		free(*str1);
-	*str1 = NULL;
-	if (n > 1 && *str2)
+	if (*str)
 	{
-		free(*str2);
-		*str2 = NULL;
+		free(*str);
+		*str = NULL;
 	}
 	return (NULL);
 }
@@ -44,7 +41,7 @@ char	*ft_strdup(char **buffer)
 
 	out = malloc((ft_strlen(*buffer) + 1) * sizeof(char));
 	if (!out)
-		return (free_function(buffer, NULL, 1));
+		return (free_function(buffer));
 	i = 0;
 	while ((*buffer)[i])
 	{
@@ -52,7 +49,7 @@ char	*ft_strdup(char **buffer)
 		i++;
 	}
 	out[i] = '\0';
-	free_function(buffer, NULL, 1);
+	free_function(buffer);
 	return (out);
 }
 
@@ -64,7 +61,10 @@ char	*ft_strjoin(char **temp, char **buffer)
 
 	out = malloc((ft_strlen(*temp) + ft_strlen(*buffer) + 1) * sizeof(char));
 	if (!out)
-		return (free_function(temp, buffer, 2));
+	{
+		free_function(buffer);
+		return (free_function(temp));
+	}
 	i = 0;
 	j = 0;
 	while ((*temp)[i])
@@ -73,7 +73,8 @@ char	*ft_strjoin(char **temp, char **buffer)
 	while ((*buffer)[i])
 		out[j++] = (*buffer)[i++];
 	out[j] = '\0';
-	free_function(temp, buffer, 2);
+	free_function(temp);
+	free_function(buffer);
 	return (out);
 }
 

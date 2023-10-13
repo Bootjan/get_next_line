@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:41:20 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:44:35 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*compute_return_value(char **temp, int len, int i)
 	out = malloc((len - i + 1) * sizeof(char));
 	if (!out)
 	{
-		free_function(temp, NULL, 1);
+		free_function(temp);
 		return (NULL);
 	}
 	j = 0;
@@ -38,14 +38,14 @@ void	clean_temp(char **temp, char **str)
 
 	if (!*temp)
 	{
-		free_function(str, NULL, 1);
+		free_function(str);
 		return ;
 	}
 	len = ft_strlen(*temp);
 	i = len - ft_strchr(*temp, '\n');
 	if (i == len)
 	{
-		free_function(temp, NULL, 1);
+		free_function(temp);
 		return ;
 	}
 	out = compute_return_value(temp, len, i);
@@ -68,7 +68,7 @@ char	*next_line(char **temp)
 		i++;
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
-		return (free_function(temp, NULL, 1));
+		return (free_function(temp));
 	j = 0;
 	while (j < i)
 	{
@@ -87,12 +87,15 @@ char	*compute_buffer(char **temp, int fd)
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
-		return (free_function(temp, NULL, 1));
+		return (free_function(temp));
 	r = read(fd, buffer, BUFFER_SIZE);
 	if (r == -1)
-		return (free_function(temp, &buffer, 2));
+	{
+		free_function(&buffer);
+		return (free_function(temp));
+	}
 	if (r == 0 && !*temp)
-		return (free_function(&buffer, NULL, 1));
+		return (free_function(&buffer));
 	if (r == 0)
 		return (NULL);
 	buffer[r] = '\0';
