@@ -3,132 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 17:04:59 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/11 19:30:31 by bootjan          ###   ########.fr       */
+/*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
+/*   Updated: 2023/10/13 13:10:32 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-void	clean_temp(char **temp)
+char	*clean_temp(char *temp)
 {
-	size_t	i;
-	size_t	j;
 	char	*out;
+	int		i;
+	int		j;
 
-	if (!*temp)
-	{
-		*temp = NULL;
-		return ;
-	}
-	if (!ft_strchr(*temp, '\n'))
-		return ;
 	i = 0;
-	while ((*temp)[i] && (*temp)[i] != '\n')
+	while (temp[i] && temp[i] != '\n')
 		i++;
-	out = malloc((ft_strlen(*temp) - i++) * sizeof(char));
+	if (temp[i] == '\n')
+		i++;
+	if (i == ft_strlen(temp))
+		return (free_function(temp, NULL, 1));
+	out = malloc((ft_strlen(temp) - i + 1) * sizeof(char));
 	if (!out)
-		return ;
+		return (free_function(temp, NULL, 1));
 	j = 0;
-	while ((*temp)[i])
-		out[j++] = (*temp)[i++];
+	while (temp[i + j])
+	{
+		out[j] = temp[i + j];
+		j++;
+	}
 	out[j] = '\0';
-	if (*temp)
-		free(*temp);
-	*temp = out;
+	free_function(temp, NULL, 1);
+	if (!temp)
+		return (free_function(out, NULL, 1));
+	return (out);
 }
 
-char	*clean_next_line(char **temp, int r)
+char	*next_line(char *temp)
 {
-	size_t	i;
+	int		i;
+	int		j;
 	char	*out;
 
-	if (!*temp)
+	if (!temp)
 		return (NULL);
 	i = 0;
-	while ((*temp)[i] && (*temp)[i] != '\n')
+	while (temp[i] && temp[i] != '\n')
 		i++;
-	if ((*temp)[i] == '\n')
+	if (temp[i] == '\n')
 		i++;
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
-		return (NULL);
-	i = 0;
-	while ((*temp)[i] && (*temp)[i] != '\n')
+		return (free_function(temp, NULL, 1));
+	j = 0;
+	while (j++ < i)
 	{
-		out[i] = (*temp)[i];
-		i++;
+		out[j] = temp[j];
+		j++;
 	}
-	if ((*temp)[i] == '\n')
-		out[i++] = '\n';
-	out[i] = '\0';
-	if (r == 0)
-		*temp = NULL;
+	out[j] = '\0';
+	temp = clean_temp(temp);
 	return (out);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*temp;
-	char		*buffer;
 	int			r;
+	char		*buffer;
+	static char	*temp;
 
-	clean_temp(&temp);
 	r = 1;
 	while (r)
 	{
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
-			return (free_function(temp, buffer));
+			return (free_function(temp, NULL, 1));
 		r = read(fd, buffer, BUFFER_SIZE);
 		if (r == -1)
-			return (free_function(temp, buffer));
+			return (free_function(temp, buffer, 2));
 		if (r == 0)
 			break ;
 		buffer[r] = '\0';
-		// printf("buffer: %s\n", buffer);
 		if (!temp)
 			temp = ft_strdup(buffer);
 		else
 			temp = ft_strjoin(temp, buffer);
-		if (!temp)
-			return (free_function(temp, buffer));
-		buffer = NULL;
 		if (ft_strchr(temp, '\n'))
 			break ;
 	}
 	if (buffer)
 		free(buffer);
-	return (clean_next_line(&temp, r));
+	return (next_line(temp));
 }
-
-void	leakschecker(void)
-{
-	system("leaks -q a.out");  
-}
-
-
-int	main(void)
-{
-	int fd = open("test.txt", O_RDONLY);
-	char *out = get_next_line(fd);
-	printf("Newline: %s\n", out);
-	out = get_next_line(fd);
-	printf("Newline: %s\n", out);
-	out = get_next_line(fd);
-	printf("Newline: %s\n", out);
-	out = get_next_line(fd);
-	printf("Newline: %s\n", out);
-	out = get_next_line(fd);
-	printf("Newline: %s\n", out);
-	out = get_next_line(fd);
-	printf("Newline: %s\n", out);
-	if (out)
-		free(out);
-	close(fd);
-	atexit(leakschecker);
-}
-
