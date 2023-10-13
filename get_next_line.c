@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:44:35 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:47:51 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,24 @@ char	*next_line(char **temp)
 	return (out);
 }
 
-char	*compute_buffer(char **temp, int fd)
+char	*compute_buffer(char **temp, int fd, int *r)
 {
 	char	*buffer;
-	int		r;
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (free_function(temp));
-	r = read(fd, buffer, BUFFER_SIZE);
-	if (r == -1)
+	*r = read(fd, buffer, BUFFER_SIZE);
+	if (*r == -1)
 	{
 		free_function(&buffer);
 		return (free_function(temp));
 	}
-	if (r == 0 && !*temp)
+	if (*r == 0 && !*temp)
 		return (free_function(&buffer));
-	if (r == 0)
+	if (*r == 0)
 		return (NULL);
-	buffer[r] = '\0';
+	buffer[*r] = '\0';
 	return (buffer);
 }
 
@@ -106,10 +105,12 @@ char	*get_next_line(int fd)
 {
 	char		*buffer;
 	static char	*temp;
-
-	while (1)
+	int			r;
+	
+	r = 1;
+	while (r)
 	{
-		buffer = compute_buffer(&temp, fd);
+		buffer = compute_buffer(&temp, fd, &r);
 		if (!buffer)
 			return (NULL);
 		if (!temp)
