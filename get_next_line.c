@@ -6,53 +6,47 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:32:36 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:44:13 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*compute_new_temp(char **temp, int len, int i)
+char	*compute_new_temp(char **temp, int len, int new_line_index)
 {
 	char	*out;
 	size_t	j;
 
-	out = malloc((len - i + 1) * sizeof(char));
+	out = malloc((len - new_line_index + 1) * sizeof(char));
 	if (!out)
 	{
 		free_function(temp);
 		return (NULL);
 	}
 	j = 0;
-	while ((*temp)[i])
-		out[j++] = (*temp)[i++];
+	while ((*temp)[new_line_index])
+		out[j++] = (*temp)[new_line_index++];
 	out[j] = '\0';
 	return (out);
 }
 
-void	clean_temp(char **temp, char **str)
+void	clean_temp(char **temp, char **str, int new_line_index)
 {
 	char	*out;
 	int		len;
-	int		i;
 
 	if (!*temp)
 	{
 		free_function(str);
 		return ;
 	}
-	i = 0;
-	while ((*temp)[i] && (*temp)[i] != '\n')
-		i++;
-	if ((*temp)[i] == '\n')
-		i++;
 	len = ft_strlen(*temp);
-	if (i == len)
+	if (new_line_index == len)
 	{
 		free_function(temp);
 		return ;
 	}
-	out = compute_new_temp(temp, len, i);
+	out = compute_new_temp(temp, len, new_line_index);
 	if (!out)
 		return ;
 	free(*temp);
@@ -82,7 +76,7 @@ char	*next_line(char **temp)
 		j++;
 	}
 	out[j] = '\0';
-	clean_temp(temp, &out);
+	clean_temp(temp, &out, i);
 	return (out);
 }
 
