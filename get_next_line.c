@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:52:32 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:55:39 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	clean_temp(char **temp, char **str)
 	char	*out;
 	int		len;
 	int		i;
-	int		j;
 
 	if (!*temp)
 	{
@@ -50,6 +49,8 @@ void	clean_temp(char **temp, char **str)
 		return ;
 	}
 	out = compute_return_value(temp, len, i);
+	if (!out)
+		return (NULL);
 	free(*temp);
 	*temp = out;
 }
@@ -93,7 +94,6 @@ char	*get_next_line(int fd)
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
 			return (free_function(&temp));
-		compute_buffer(&temp, &buffer);
 		r = read(fd, buffer, BUFFER_SIZE);
 		if (r == -1)
 		{
