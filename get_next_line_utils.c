@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 13:26:21 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/13 14:40:55 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,31 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*free_function(char *str1, char *str2, int n)
+char	*free_function(char **str1, char **str2, int n)
 {
-	if (n > 0 && str1)
-		free(str1);
-	str1 = NULL;
-	if (n > 1 && str2)
-		free(str2);
-	str2 = NULL;
+	if (n > 0 && *str1)
+		free(*str1);
+	*str1 = NULL;
+	if (n > 1 && *str2)
+	{
+		free(*str2);
+		*str2 = NULL;
+	}
 	return (NULL);
 }
 
-char	*ft_strdup(char *buffer)
+char	*ft_strdup(char **buffer)
 {
 	char	*out;
 	int		i;
 
-	out = malloc((ft_strlen(buffer) + 1) * sizeof(char));
+	out = malloc((ft_strlen(*buffer) + 1) * sizeof(char));
 	if (!out)
 		return (free_function(buffer, NULL, 1));
 	i = 0;
-	while (buffer[i])
+	while ((*buffer)[i])
 	{
-		out[i] = buffer[i];
+		out[i] = (*buffer)[i];
 		i++;
 	}
 	out[i] = '\0';
@@ -54,22 +56,22 @@ char	*ft_strdup(char *buffer)
 	return (out);
 }
 
-char	*ft_strjoin(char *temp, char *buffer)
+char	*ft_strjoin(char **temp, char **buffer)
 {
 	char	*out;
 	int		i;
 	int		j;
 
-	out = malloc((ft_strlen(temp) + ft_strlen(buffer) + 1) * sizeof(char));
+	out = malloc((ft_strlen(*temp) + ft_strlen(*buffer) + 1) * sizeof(char));
 	if (!out)
 		return (free_function(temp, buffer, 2));
 	i = 0;
 	j = 0;
-	while (temp[i])
-		out[j++] = temp[i++];
+	while ((*temp)[i])
+		out[j++] = (*temp)[i++];
 	i = 0;
-	while (buffer[i])
-		out[j++] = buffer[i++];
+	while ((*buffer)[i])
+		out[j++] = (*buffer)[i++];
 	out[j] = '\0';
 	free_function(temp, buffer, 2);
 	return (out);
