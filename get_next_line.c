@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 13:10:32 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:15:55 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*clean_temp(char *temp)
 		i++;
 	if (temp[i] == '\n')
 		i++;
-	if (i == ft_strlen(temp))
+	if (i == (int)ft_strlen(temp))
 		return (free_function(temp, NULL, 1));
 	out = malloc((ft_strlen(temp) - i + 1) * sizeof(char));
 	if (!out)
@@ -36,8 +36,8 @@ char	*clean_temp(char *temp)
 	}
 	out[j] = '\0';
 	free_function(temp, NULL, 1);
-	if (!temp)
-		return (free_function(out, NULL, 1));
+	// if (!temp)
+	// 	return (free_function(out, NULL, 1));
 	return (out);
 }
 
