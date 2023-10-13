@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 15:44:13 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:04:39 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ int	ft_strchr(const char *str, char c)
 	size_t	i;
 
 	if (!str)
-		return (-1);
+		return (0);
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == c)
-			return (i);
+			return (1);
 		i++;
 	}
-	return (-1);
+	return (0);
 }

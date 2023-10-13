@@ -6,41 +6,54 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:02:55 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:07:59 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*compute_new_temp(char **temp, int len, int i)
+{
+	char	*out;
+	size_t	j;
+
+	out = malloc((len - i + 1) * sizeof(char));
+	if (!out)
+	{
+		free_function(temp);
+		return (NULL);
+	}
+	j = 0;
+	while ((*temp)[i])
+		out[j++] = (*temp)[i++];
+	out[j] = '\0';
+	return (out);
+}
 
 void	clean_temp(char **temp, char **str)
 {
 	char	*out;
 	int		len;
 	int		i;
-	int		j;
 
 	if (!*temp)
 	{
 		free_function(str);
 		return ;
 	}
+	while ((*temp)[i] && (*temp)[i] != '\n')
+		i++;
+	if ((*temp)[i] == '\n')
+		i++;
 	len = ft_strlen(*temp);
-	i = len - ft_strchr(*temp, '\n') - 1;
 	if (i == len)
 	{
 		free_function(temp);
 		return ;
 	}
-	out = malloc((len - i + 1) * sizeof(char));
+	out = compute_new_temp(temp, len, i);
 	if (!out)
-	{
-		free_function(temp);
 		return ;
-	}
-	j = 0;
-	while ((*temp)[i])
-		out[j++] = (*temp)[i++];
-	out[j] = '\0';
 	free(*temp);
 	*temp = out;
 }
