@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 20:04:28 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:06:39 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,7 @@ char	*compute_buffer(char **temp, int fd, int *r)
 		return (free_function(temp));
 	}
 	if (*r == 0)
-		free_function(&buffer);
-	if (*r == 0 && !*temp)
-		return (NULL);
+		return (free_function(&buffer));
 	buffer[*r] = '\0';
 	return (buffer);
 }
