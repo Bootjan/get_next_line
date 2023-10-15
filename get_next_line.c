@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 19:41:36 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/15 20:04:28 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "get_next_line.h"
 
 char	*compute_new_temp(char **temp, int len, int new_line_index)
@@ -90,8 +91,10 @@ char	*compute_buffer(char **temp, int fd, int *r)
 		free_function(&buffer);
 		return (free_function(temp));
 	}
+	if (*r == 0)
+		free_function(&buffer);
 	if (*r == 0 && !*temp)
-		return (free_function(&buffer));
+		return (NULL);
 	buffer[*r] = '\0';
 	return (buffer);
 }
@@ -113,35 +116,13 @@ char	*get_next_line(int fd)
 			break ;
 		if (!buffer)
 			return (NULL);
-		new_line_index = ft_strchr(buffer, '\n');
 		if (!temp)
 			temp = ft_strdup(&buffer, r, &temp_len);
 		else
 			temp = ft_strjoin(&temp, &buffer, r, &temp_len);
+		new_line_index = ft_strchr(temp, '\n');
 		if (new_line_index >= 0)
 			break ;
 	}
-	if (buffer)
-		free(buffer);
 	return (next_line(&temp, new_line_index, temp_len));
-}
-
-#include <stdio.h>
-#include <fcntl.h>
-int	main()
-{
-	int fd = open("text.txt", O_RDONLY);
-	char *out = get_next_line(fd);
-	printf("%s\n", out);
-	out = get_next_line(fd);
-	printf("%s\n", out);
-	out = get_next_line(fd);
-	printf("%s\n", out);
-	out = get_next_line(fd);
-	printf("%s\n", out);
-	out = get_next_line(fd);
-	printf("%s\n", out);
-	if (out)
-		free(out);
-	close(fd);
 }
