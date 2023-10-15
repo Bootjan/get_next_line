@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 18:20:31 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:21:55 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	clean_temp(char **temp, char **str, int new_line_index, int len)
 
 char	*next_line(char **temp, int new_line_index, int len)
 {
-	int		i;
 	int		j;
 	char	*out;
 
