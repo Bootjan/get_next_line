@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 20:20:28 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 21:31:25 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,93 @@ char	*get_next_line(int fd)
 			break ;
 	}
 	return (next_line(&temp, new_line_index, temp_len));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+int	lpush_back(t_list **list, char *data)
+{
+	t_list	*elem;
+	t_list	*current;
+
+	elem = malloc(sizeof(t_list));
+	if (!elem)
+	{
+		free_list(list);
+		return (0);
+	}
+	elem->data = data;
+	current = *list;
+	if (!current)
+	{
+		current = elem;
+		return (1);
+	}
+	while (current->next)
+		current = current->next;
+	current->next = elem;
+	return (1);
+}
+
+char	*free_list(t_list **list, int i)
+{
+	t_list	*current;
+	t_list	*next;
+
+	if (!list)
+		return ;
+	current = *list;
+	while (current && (i == -1 || i > 0))
+	{
+		next = current->next;
+		if (current->data)
+			free(current->data);
+		free(current);
+		current = next;
+	}
+	*list = current;
+	return (NULL);
+}
+
+char	*next_line(t_list **list)
+{
+	char	*out;
+	int		i;
+	int		len;
+	t_list	*current;
+	int		contains_n;
+
+	if (!*list)
+		return (NULL);
+	i = 0;
+	current = *list;
+	while (current)
+	{
+		contains_n = ft_strchr(current->data, '\n');
+		if (contains_n >= 0)
+		{
+			out = make_string(list, i + 1, len + contains_n + 1);
+			if (!out)
+				return (free_list(list, -1));
+			free_list(list, i + 1);
+			return (out);
+		}
+		len += ft_strlen(current->data);
+		current = current->next;
+		i++;
+	}
+	out = make_string(list, i, len);
+	if (!out)
+		return (free_list(list, -1));
+	return (out);
 }

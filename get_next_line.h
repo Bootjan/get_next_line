@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 18:18:05 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:50:49 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,10 @@ char	*ft_strjoin(char **temp, char **buffer, int r, int *temp_len);
 int		ft_strchr(const char *dst, char c);
 char	*get_next_line(int fd);
 char	*free_function(char **str);
+
+typedef struct s_list {
+	char	*data;
+	struct	s_list *next;
+}	t_list;
 
 #endif
