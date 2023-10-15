@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 20:08:44 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:14:25 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	clean_temp(char **temp, char **str, int new_line_index, int len)
 		free_function(str);
 		return ;
 	}
-	if (new_line_index + 1 == len)
+	if (new_line_index + 1 == len || new_line_index == -1)
 	{
 		free_function(temp);
 		return ;
@@ -125,3 +125,17 @@ char	*get_next_line(int fd)
 	}
 	return (next_line(&temp, new_line_index, temp_len));
 }
+// #include <stdio.h>
+// #include <fcntl.h>
+
+// int	main()
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	char *out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	close(fd);
+// }
