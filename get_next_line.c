@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 18:23:42 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:30:18 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,17 @@ char	*compute_new_temp(char **temp, int len, int new_line_index)
 	return (out);
 }
 
-void	clean_temp(char **temp, char **str, int new_line_index, int len)
+void	clean_temp(char **temp, char **str, int new_line_index)
 {
 	char	*out;
+	int		len;
 
 	if (!*temp)
 	{
 		free_function(str);
 		return ;
 	}
+	len = ft_strlen(*temp);
 	if (new_line_index == len)
 	{
 		free_function(temp);
@@ -51,15 +53,16 @@ void	clean_temp(char **temp, char **str, int new_line_index, int len)
 	*temp = out;
 }
 
-char	*next_line(char **temp, int new_line_index, int len)
+char	*next_line(char **temp, int new_line_index)
 {
+	int		i;
 	int		j;
 	char	*out;
 
 	if (!*temp)
 		return (NULL);
 	if (new_line_index == -1)
-		new_line_index = len;
+		new_line_index = ft_strlen(*temp);
 	out = malloc((new_line_index + 1) * sizeof(char));
 	if (!out)
 		return (free_function(temp));
@@ -70,7 +73,7 @@ char	*next_line(char **temp, int new_line_index, int len)
 		j++;
 	}
 	out[j] = '\0';
-	clean_temp(temp, &out, new_line_index, len);
+	clean_temp(temp, &out, new_line_index);
 	return (out);
 }
 
@@ -89,6 +92,7 @@ char	*compute_buffer(char **temp, int fd, int *r)
 	}
 	if (*r == 0 && !*temp)
 		return (free_function(&buffer));
+	buffer[r] = '\0';
 	return (buffer);
 }
 
@@ -109,7 +113,6 @@ char	*get_next_line(int fd)
 			break ;
 		if (!buffer)
 			return (NULL);
-		buffer[r] = '\0';
 		new_line_index = ft_strchr(buffer, '\n');
 		if (!temp)
 			temp = ft_strdup(&buffer, r, &temp_len);
@@ -120,5 +123,5 @@ char	*get_next_line(int fd)
 	}
 	if (buffer)
 		free(buffer);
-	return (next_line(&temp, new_line_index, temp_len));
+	return (next_line(&temp, new_line_index));
 }
