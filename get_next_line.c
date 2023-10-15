@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 20:14:25 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:20:28 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,3 @@ char	*get_next_line(int fd)
 	}
 	return (next_line(&temp, new_line_index, temp_len));
 }
-// #include <stdio.h>
-// #include <fcntl.h>
-
-// int	main()
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	char *out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	close(fd);
-// }
