@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 18:30:18 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 19:41:36 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,30 @@ char	*compute_new_temp(char **temp, int len, int new_line_index)
 	char	*out;
 	size_t	j;
 
-	out = malloc((len - new_line_index + 1) * sizeof(char));
+	out = malloc((len - new_line_index) * sizeof(char));
 	if (!out)
 	{
 		free_function(temp);
 		return (NULL);
 	}
 	j = 0;
+	new_line_index++;
 	while ((*temp)[new_line_index])
 		out[j++] = (*temp)[new_line_index++];
 	out[j] = '\0';
 	return (out);
 }
 
-void	clean_temp(char **temp, char **str, int new_line_index)
+void	clean_temp(char **temp, char **str, int new_line_index, int len)
 {
 	char	*out;
-	int		len;
 
 	if (!*temp)
 	{
 		free_function(str);
 		return ;
 	}
-	len = ft_strlen(*temp);
-	if (new_line_index == len)
+	if (new_line_index + 1 == len)
 	{
 		free_function(temp);
 		return ;
@@ -53,27 +52,28 @@ void	clean_temp(char **temp, char **str, int new_line_index)
 	*temp = out;
 }
 
-char	*next_line(char **temp, int new_line_index)
+char	*next_line(char **temp, int new_line_index, int len)
 {
-	int		i;
 	int		j;
 	char	*out;
+	int		malloc_size;
 
 	if (!*temp)
 		return (NULL);
+	malloc_size = new_line_index + 1;
 	if (new_line_index == -1)
-		new_line_index = ft_strlen(*temp);
-	out = malloc((new_line_index + 1) * sizeof(char));
+		malloc_size = len;
+	out = malloc((malloc_size + 1) * sizeof(char));
 	if (!out)
 		return (free_function(temp));
 	j = 0;
-	while (j < new_line_index)
+	while (j < malloc_size)
 	{
 		out[j] = (*temp)[j];
 		j++;
 	}
 	out[j] = '\0';
-	clean_temp(temp, &out, new_line_index);
+	clean_temp(temp, &out, new_line_index, len);
 	return (out);
 }
 
@@ -92,7 +92,7 @@ char	*compute_buffer(char **temp, int fd, int *r)
 	}
 	if (*r == 0 && !*temp)
 		return (free_function(&buffer));
-	buffer[r] = '\0';
+	buffer[*r] = '\0';
 	return (buffer);
 }
 
@@ -123,5 +123,25 @@ char	*get_next_line(int fd)
 	}
 	if (buffer)
 		free(buffer);
-	return (next_line(&temp, new_line_index));
+	return (next_line(&temp, new_line_index, temp_len));
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+int	main()
+{
+	int fd = open("text.txt", O_RDONLY);
+	char *out = get_next_line(fd);
+	printf("%s\n", out);
+	out = get_next_line(fd);
+	printf("%s\n", out);
+	out = get_next_line(fd);
+	printf("%s\n", out);
+	out = get_next_line(fd);
+	printf("%s\n", out);
+	out = get_next_line(fd);
+	printf("%s\n", out);
+	if (out)
+		free(out);
+	close(fd);
 }
