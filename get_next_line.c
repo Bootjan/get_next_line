@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 18:10:54 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:17:26 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	clean_temp(char **temp, char **str, int new_line_index, int len)
 	*temp = out;
 }
 
-char	*next_line(char **temp, int new_line_index)
+char	*next_line(char **temp, int new_line_index, int len)
 {
 	int		i;
 	int		j;
@@ -61,7 +61,6 @@ char	*next_line(char **temp, int new_line_index)
 
 	if (!*temp)
 		return (NULL);
-	len = (int)ft_strlen(*temp);
 	if (new_line_index == -1)
 		new_line_index = len;
 	out = malloc((new_line_index + 1) * sizeof(char));
@@ -102,8 +101,10 @@ char	*get_next_line(int fd)
 	char		*buffer;
 	static char	*temp;
 	int			new_line_index;
+	int			temp_len;
 
 	r = 1;
+	temp_len = 0;
 	while (r)
 	{
 		buffer = compute_buffer(&temp, fd, &r);
@@ -114,13 +115,13 @@ char	*get_next_line(int fd)
 		buffer[r] = '\0';
 		new_line_index = ft_strchr(buffer, '\n');
 		if (!temp)
-			temp = ft_strdup(&buffer, r);
+			temp = ft_strdup(&buffer, r, &temp_len);
 		else
-			temp = ft_strjoin(&temp, &buffer, r);
+			temp = ft_strjoin(&temp, &buffer, r, &temp_len);
 		if (new_line_index >= 0)
 			break ;
 	}
 	if (buffer)
 		free(buffer);
-	return (next_line(&temp, new_line_index));
+	return (next_line(&temp, new_line_index, temp_len));
 }
