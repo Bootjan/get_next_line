@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/13 16:44:13 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 18:10:54 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*compute_new_temp(char **temp, int len, int new_line_index)
 	return (out);
 }
 
-void	clean_temp(char **temp, char **str, int new_line_index)
+void	clean_temp(char **temp, char **str, int new_line_index, int len)
 {
 	char	*out;
 	int		len;
@@ -40,7 +40,6 @@ void	clean_temp(char **temp, char **str, int new_line_index)
 		free_function(str);
 		return ;
 	}
-	len = ft_strlen(*temp);
 	if (new_line_index == len)
 	{
 		free_function(temp);
@@ -53,30 +52,29 @@ void	clean_temp(char **temp, char **str, int new_line_index)
 	*temp = out;
 }
 
-char	*next_line(char **temp)
+char	*next_line(char **temp, int new_line_index)
 {
 	int		i;
 	int		j;
 	char	*out;
+	int		len;
 
 	if (!*temp)
 		return (NULL);
-	i = 0;
-	while ((*temp)[i] && (*temp)[i] != '\n')
-		i++;
-	if ((*temp)[i] == '\n')
-		i++;
-	out = malloc((i + 1) * sizeof(char));
+	len = (int)ft_strlen(*temp);
+	if (new_line_index == -1)
+		new_line_index = len;
+	out = malloc((new_line_index + 1) * sizeof(char));
 	if (!out)
 		return (free_function(temp));
 	j = 0;
-	while (j < i)
+	while (j < new_line_index)
 	{
 		out[j] = (*temp)[j];
 		j++;
 	}
 	out[j] = '\0';
-	clean_temp(temp, &out, i);
+	clean_temp(temp, &out, new_line_index, len);
 	return (out);
 }
 
@@ -103,6 +101,7 @@ char	*get_next_line(int fd)
 	int			r;
 	char		*buffer;
 	static char	*temp;
+	int			new_line_index;
 
 	r = 1;
 	while (r)
@@ -113,14 +112,15 @@ char	*get_next_line(int fd)
 		if (!buffer)
 			return (NULL);
 		buffer[r] = '\0';
+		new_line_index = ft_strchr(buffer, '\n');
 		if (!temp)
 			temp = ft_strdup(&buffer, r);
 		else
 			temp = ft_strjoin(&temp, &buffer, r);
-		if (ft_strchr(temp, '\n'))
+		if (new_line_index >= 0)
 			break ;
 	}
 	if (buffer)
 		free(buffer);
-	return (next_line(&temp));
+	return (next_line(&temp, new_line_index));
 }
