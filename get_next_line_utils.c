@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:12:53 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:19:35 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*free_list(t_buffers **list, int i)
 	if (!*list)
 		return (NULL);
 	current = *list;
-	while (current && (i == -1 || i > 1))
+	while (current && (i < 0 || i > 1))
 	{
 		next = current->next;
 		if (current->data)
