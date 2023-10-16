@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 12:59:42 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:00:32 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	*make_string(t_buffers **list, int elements, int length)
 
 char	*next_line(t_buffers **list)
 {
-	char		*out;
 	int			len;
 	t_buffers	*current;
 	int			contains_n;
