@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:48:02 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:28:25 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,3 +117,39 @@ char	*get_next_line(int fd)
 	}
 	return (next_line(&list));
 }
+
+// #include <stdio.h>
+// #include <fcntl.h>
+// int	main()
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	char *out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	close(fd);
+// }

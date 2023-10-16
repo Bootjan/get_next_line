@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:47:35 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:11:57 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,33 @@ int	ft_strchr(const char *str, char c)
 	return (-1);
 }
 
-char	*clean_data(char *data)
+char	*clean_data(char **data)
 {
 	char	*out;
 	int		i;
 	int		index_n;
 
-	if (!data)
+	if (!*data)
 		return (NULL);
-	index_n = ft_strchr(data, '\n');
-	i = ft_strlen(data) - index_n - 1;
+	index_n = ft_strchr(*data, '\n');
+	i = ft_strlen(*data) - index_n - 1;
 	if (i == 0 || index_n == -1)
 	{
-		free(data);
+		free(*data);
 		return (NULL);
 	}
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
 		return (NULL);
 	i = 0;
-	while (data[index_n + i + 1])
+	while ((*data)[index_n + i + 1])
 	{
-		out[i] = data[index_n + i + 1];
+		out[i] = (*data)[index_n + i + 1];
 		i++;
 	}
 	out[i] = '\0';
-	free(data);
+	free(*data);
+	*data = NULL;
 	return (out);
 }
 
@@ -88,7 +89,7 @@ void	free_list(t_buffers **list, int i)
 	}
 	if (current && i == 1)
 	{
-		current->data = clean_data(current->data);
+		current->data = clean_data(&current->data);
 		if (!current->data)
 		{
 			free(current);
