@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 20:50:49 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/15 23:38:21 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 # include <stdlib.h>
 
 size_t	ft_strlen(const char *s);
-char	*ft_strdup(char **buffer, int r, int *temp_len);
-char	*ft_strjoin(char **temp, char **buffer, int r, int *temp_len);
+char	*free_list(t_list **list, int i);
+int		lpush_back(t_list **list, char *data);
 int		ft_strchr(const char *dst, char c);
 char	*get_next_line(int fd);
 char	*free_function(char **str);
 
-typedef struct s_list {
+typedef struct s_buffers {
 	char	*data;
-	struct	s_list *next;
-}	t_list;
+	struct	s_buffer *next;
+}	t_buffers;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 19:32:00 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/15 23:41:13 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,62 +24,6 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*free_function(char **str)
-{
-	if (*str)
-	{
-		free(*str);
-		*str = NULL;
-	}
-	return (NULL);
-}
-
-char	*ft_strdup(char **buffer, int r, int *temp_len)
-{
-	char	*out;
-	int		i;
-
-	out = malloc((r + 1) * sizeof(char));
-	if (!out)
-		return (free_function(buffer));
-	i = 0;
-	while ((*buffer)[i])
-	{
-		out[i] = (*buffer)[i];
-		i++;
-	}
-	out[i] = '\0';
-	free_function(buffer);
-	*temp_len = r;
-	return (out);
-}
-
-char	*ft_strjoin(char **temp, char **buffer, int r, int *temp_len)
-{
-	char	*out;
-	int		i;
-	int		j;
-
-	out = malloc((*temp_len + r + 1) * sizeof(char));
-	if (!out)
-	{
-		free_function(buffer);
-		return (free_function(temp));
-	}
-	i = 0;
-	j = 0;
-	while ((*temp)[i])
-		out[j++] = (*temp)[i++];
-	i = 0;
-	while ((*buffer)[i])
-		out[j++] = (*buffer)[i++];
-	out[j] = '\0';
-	free_function(temp);
-	free_function(buffer);
-	*temp_len += r;
-	return (out);
-}
-
 int	ft_strchr(const char *str, char c)
 {
 	size_t	i;
@@ -94,4 +38,77 @@ int	ft_strchr(const char *str, char c)
 		i++;
 	}
 	return (-1);
+}
+
+char	*clean_data(char *data)
+{
+	char	*out;
+	int		i;
+	int		index_n;
+
+	if (!data)
+		return (NULL);
+	index_n = ft_strchr(data, '\n');
+	i = ft_strlen(data) - index_n;
+	if (i == 0)
+		return (NULL);
+	out = malloc(i * sizeof(char));
+	if (!out)
+		return (NULL);
+	i = 0;
+	while (data[index_n + i])
+	{
+		out[i] = data[index_n + i];
+		i++;
+	}
+	out[i] = '\0';
+	free(data);
+	return (out);
+}
+
+char	*free_list(t_buffers **list, int i)
+{
+	t_buffers	*current;
+	t_buffers	*next;
+
+	if (!*list)
+		return ;
+	current = *list;
+	while (current && (i == -1 || i > 0))
+	{
+		next = current->next;
+		if (current->data)
+			free(current->data);
+		free(current);
+		current = next;
+		i--;
+	}
+	*list = current;
+	if (current)
+		current->data = clean_data(current->data);
+	if (!current->data)
+		return (free_list(list, -1));
+	return (NULL);
+}
+
+int	lpush_back(t_buffers **list, char *data)
+{
+	t_buffers	*elem;
+	t_buffers	*current;
+
+	elem = malloc(sizeof(t_buffers));
+	if (!elem)
+		return (free_list(list, -1));
+	elem->data = data;
+	elem->next = NULL;
+	current = *list;
+	if (!current)
+	{
+		*list = elem;
+		return (1);
+	}
+	while (current->next)
+		current = current->next;
+	current->next = elem;
+	return (1);
 }
