@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 14:11:57 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:36:21 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ char	*clean_data(char **data)
 	}
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
+	{
+		free(*data);	
 		return (NULL);
+	}
 	i = 0;
 	while ((*data)[index_n + i + 1])
 	{
@@ -107,8 +110,7 @@ int	lpush_back(t_buffers **list, char *data)
 	elem = malloc(sizeof(t_buffers));
 	if (!elem)
 	{
-		if (data)
-			free(data);
+		free(data);
 		free_list(list, -1);
 		return (0);
 	}
