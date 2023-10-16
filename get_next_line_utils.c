@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 12:58:05 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:12:53 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*clean_data(char *data)
 		return (NULL);
 	index_n = ft_strchr(data, '\n');
 	i = ft_strlen(data) - index_n - 1;
-	if (i == 0)
+	if (i == 0 || index_n == -1)
 		return (NULL);
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)

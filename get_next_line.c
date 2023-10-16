@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:00:32 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:15:13 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*make_string(t_buffers **list, int elements, int length)
 	while (current && elems_done++ < elements)
 	{
 		j = 0;
-		while (current->data[j] && i < length--)
+		while (current->data[j] && i < length)
 			out[i++] = (char)current->data[j++];
 		current = current->next;
 	}
@@ -109,20 +109,26 @@ char	*get_next_line(int fd)
 	return (next_line(&list));
 }
 
-// #include <stdio.h>
-// #include <fcntl.h>
-// int	main()
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	char *out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	close(fd);
-// }
+#include <stdio.h>
+#include <fcntl.h>
+int	main()
+{
+	int fd = open("text.txt", O_RDONLY);
+	char *out = get_next_line(fd);
+	printf(";%s;\n", out);
+	if (out)
+		free(out);
+	out = get_next_line(fd);
+	printf(";%s;\n", out);
+	if (out)
+		free(out);
+	out = get_next_line(fd);
+	printf(";%s;\n", out);
+	if (out)
+		free(out);
+	out = get_next_line(fd);
+	printf(";%s;\n", out);
+	if (out)
+		free(out);
+	close(fd);
+}
