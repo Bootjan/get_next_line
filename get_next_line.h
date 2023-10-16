@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 12:20:26 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:48:14 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,10 @@ typedef struct s_buffers {
 }	t_buffers;
 
 size_t	ft_strlen(const char *s);
-char	*free_list(t_buffers **list, int i);
+void	free_list(t_buffers **list, int i);
 int		lpush_back(t_buffers **list, char *data);
 int		ft_strchr(const char *dst, char c);
 char	*get_next_line(int fd);
 char	*free_function(char **str);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:19:35 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:47:35 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ char	*clean_data(char *data)
 	index_n = ft_strchr(data, '\n');
 	i = ft_strlen(data) - index_n - 1;
 	if (i == 0 || index_n == -1)
+	{
+		free(data);
 		return (NULL);
+	}
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
 		return (NULL);
@@ -66,13 +69,13 @@ char	*clean_data(char *data)
 	return (out);
 }
 
-char	*free_list(t_buffers **list, int i)
+void	free_list(t_buffers **list, int i)
 {
 	t_buffers	*current;
 	t_buffers	*next;
 
 	if (!*list)
-		return (NULL);
+		return ;
 	current = *list;
 	while (current && (i < 0 || i > 1))
 	{
@@ -93,7 +96,6 @@ char	*free_list(t_buffers **list, int i)
 		}
 	}
 	*list = current;
-	return (NULL);
 }
 
 int	lpush_back(t_buffers **list, char *data)
@@ -104,6 +106,8 @@ int	lpush_back(t_buffers **list, char *data)
 	elem = malloc(sizeof(t_buffers));
 	if (!elem)
 	{
+		if (data)
+			free(data);
 		free_list(list, -1);
 		return (0);
 	}

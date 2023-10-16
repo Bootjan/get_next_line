@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:29:28 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/16 13:48:02 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@ char	*compute_buffer(t_buffers **list, int fd, int *r)
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
-		return (free_list(list, -1));
+	{
+		free_list(list, -1);
+		return (NULL);
+	}
 	*r = read(fd, buffer, BUFFER_SIZE);
 	if (*r == -1)
 	{
 		free(buffer);
-		return (free_list(list, -1));
+		free_list(list, -1);
+		return (NULL);
 	}
 	if (*r == 0)
 	{
@@ -45,7 +49,10 @@ char	*make_string(t_buffers **list, int elements, int length)
 
 	out = malloc((length + 1) * sizeof(char));
 	if (!out)
-		return (free_list(list, -1));
+	{
+		free_list(list, -1);
+		return (NULL);
+	}
 	current = *list;
 	i = 0;
 	elems_done = 0;
@@ -101,10 +108,7 @@ char	*get_next_line(int fd)
 		if (!buffer)
 			break ;
 		if (r == 0)
-		{
-			free(buffer);
 			break ;
-		}
 		if (!lpush_back(&list, buffer))
 			return (NULL);
 		index_n = ft_strchr(buffer, '\n');
@@ -113,27 +117,3 @@ char	*get_next_line(int fd)
 	}
 	return (next_line(&list));
 }
-
-// #include <stdio.h>
-// #include <fcntl.h>
-// int	main()
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	char *out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	close(fd);
-// }
