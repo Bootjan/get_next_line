@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 14:28:25 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:32:36 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*compute_buffer(t_buffers **list, int fd, int *r)
 	if (*r == 0)
 	{
 		free(buffer);
+		free_list(list, -1);
 		return (NULL);
 	}
 	buffer[*r] = '\0';
