@@ -6,11 +6,10 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 14:33:22 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 15:02:45 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "get_next_line.h"
 
 char	*compute_buffer(t_buffers **list, int fd, int *r)
@@ -121,33 +120,14 @@ char	*get_next_line(int fd)
 // int	main()
 // {
 // 	int fd = open("text.txt", O_RDONLY);
-// 	char *out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	if (out)
-// 		free(out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
-// 	out = get_next_line(fd);
-// 	printf(";%s;\n", out);
+// 	char *out;
+// 	int i = 0;
+// 	while (i++ < 12)
+// 	{
+// 		out = get_next_line(fd);
+// 		printf("index: %i,  ;%s;\n", i, out);
+// 		if (out)
+// 			free(out);
+// 	}
 // 	close(fd);
 // }
