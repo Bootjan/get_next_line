@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 14:56:34 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:59:59 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,15 @@ char	*clean_data(char **data)
 	}
 	out = malloc((i + 1) * sizeof(char));
 	if (!out)
-		return (NULL);
-	i = 0;
-	while ((*data)[index_n + i + 1])
 	{
-		out[i] = (*data)[index_n + i + 1];
-		i++;
+		free(*data);
+		return (NULL);
 	}
+	i = 0;
+	while ((*data)[index_n + 1])
+		out[i++] = (*data)[index_n++ + 1];
 	out[i] = '\0';
 	free(*data);
-	*data = NULL;
 	return (out);
 }
 
