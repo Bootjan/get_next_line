@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:48:14 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:02:18 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ int		lpush_back(t_buffers **list, char *data);
 int		ft_strchr(const char *dst, char c);
 char	*get_next_line(int fd);
 char	*free_function(char **str);
+char	*get_next_line(int fd);
 
 #endif
