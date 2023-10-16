@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 23:41:13 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/16 12:58:05 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ char	*clean_data(char *data)
 	if (!data)
 		return (NULL);
 	index_n = ft_strchr(data, '\n');
-	i = ft_strlen(data) - index_n;
+	i = ft_strlen(data) - index_n - 1;
 	if (i == 0)
 		return (NULL);
-	out = malloc(i * sizeof(char));
+	out = malloc((i + 1) * sizeof(char));
 	if (!out)
 		return (NULL);
 	i = 0;
-	while (data[index_n + i])
+	while (data[index_n + i + 1])
 	{
-		out[i] = data[index_n + i];
+		out[i] = data[index_n + i + 1];
 		i++;
 	}
 	out[i] = '\0';
@@ -72,9 +72,9 @@ char	*free_list(t_buffers **list, int i)
 	t_buffers	*next;
 
 	if (!*list)
-		return ;
+		return (NULL);
 	current = *list;
-	while (current && (i == -1 || i > 0))
+	while (current && (i == -1 || i > 1))
 	{
 		next = current->next;
 		if (current->data)
@@ -83,11 +83,16 @@ char	*free_list(t_buffers **list, int i)
 		current = next;
 		i--;
 	}
-	*list = current;
-	if (current)
+	if (current && i == 1)
+	{
 		current->data = clean_data(current->data);
-	if (!current->data)
-		return (free_list(list, -1));
+		if (!current->data)
+		{
+			free(current);
+			current = NULL;
+		}
+	}
+	*list = current;
 	return (NULL);
 }
 
@@ -98,7 +103,10 @@ int	lpush_back(t_buffers **list, char *data)
 
 	elem = malloc(sizeof(t_buffers));
 	if (!elem)
-		return (free_list(list, -1));
+	{
+		free_list(list, -1);
+		return (0);
+	}
 	elem->data = data;
 	elem->next = NULL;
 	current = *list;

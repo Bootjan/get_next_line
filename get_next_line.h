@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:01:30 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/15 23:38:21 by bootjan          ###   ########.fr       */
+/*   Updated: 2023/10/16 12:20:26 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,17 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+typedef struct s_buffers {
+	char				*data;
+	struct s_buffers	*next;
+}	t_buffers;
+
 size_t	ft_strlen(const char *s);
-char	*free_list(t_list **list, int i);
-int		lpush_back(t_list **list, char *data);
+char	*free_list(t_buffers **list, int i);
+int		lpush_back(t_buffers **list, char *data);
 int		ft_strchr(const char *dst, char c);
 char	*get_next_line(int fd);
 char	*free_function(char **str);
 
-typedef struct s_buffers {
-	char	*data;
-	struct	s_buffer *next;
-}	t_buffers;
 
 #endif
