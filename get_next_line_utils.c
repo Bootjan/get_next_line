@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 14:52:35 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 14:56:34 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,30 @@ int	ft_strchr(const char *str, char c)
 char	*clean_data(char **data)
 {
 	char	*out;
-	int		index_n;
 	int		i;
+	int		index_n;
 
 	if (!*data)
 		return (NULL);
 	index_n = ft_strchr(*data, '\n');
-	if (index_n == -1)
+	i = ft_strlen(*data) - index_n - 1;
+	if (i == 0 || index_n == -1)
 	{
 		free(*data);
 		return (NULL);
 	}
-	out = malloc((index_n + 2) * sizeof(char));
+	out = malloc((i + 1) * sizeof(char));
 	if (!out)
-	{
-		free(*data);
 		return (NULL);
-	}
 	i = 0;
-	while ((*data)[index_n++ + 1])
-		out[i++] = (*data)[index_n++ + 1];
+	while ((*data)[index_n + i + 1])
+	{
+		out[i] = (*data)[index_n + i + 1];
+		i++;
+	}
 	out[i] = '\0';
 	free(*data);
+	*data = NULL;
 	return (out);
 }
 
