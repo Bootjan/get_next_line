@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 13:15:13 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/16 13:29:28 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*compute_buffer(t_buffers **list, int fd, int *r)
 	if (*r == -1)
 	{
 		free(buffer);
-		return (free_list(list, -1)); // free buffer
+		return (free_list(list, -1));
 	}
 	if (*r == 0)
 	{
@@ -98,8 +98,13 @@ char	*get_next_line(int fd)
 		buffer = compute_buffer(&list, fd, &r);
 		if (!buffer && !list)
 			return (NULL);
-		if (r == 0)
+		if (!buffer)
 			break ;
+		if (r == 0)
+		{
+			free(buffer);
+			break ;
+		}
 		if (!lpush_back(&list, buffer))
 			return (NULL);
 		index_n = ft_strchr(buffer, '\n');
@@ -109,26 +114,26 @@ char	*get_next_line(int fd)
 	return (next_line(&list));
 }
 
-#include <stdio.h>
-#include <fcntl.h>
-int	main()
-{
-	int fd = open("text.txt", O_RDONLY);
-	char *out = get_next_line(fd);
-	printf(";%s;\n", out);
-	if (out)
-		free(out);
-	out = get_next_line(fd);
-	printf(";%s;\n", out);
-	if (out)
-		free(out);
-	out = get_next_line(fd);
-	printf(";%s;\n", out);
-	if (out)
-		free(out);
-	out = get_next_line(fd);
-	printf(";%s;\n", out);
-	if (out)
-		free(out);
-	close(fd);
-}
+// #include <stdio.h>
+// #include <fcntl.h>
+// int	main()
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	char *out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	out = get_next_line(fd);
+// 	printf(";%s;\n", out);
+// 	if (out)
+// 		free(out);
+// 	close(fd);
+// }
