@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:41:05 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/17 17:57:42 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:59:40 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*get_next_line(int fd)
 
 	r = 1;
 	index_n = ft_strchr(temp, '\n');
-	while (r && index_n == -1)
+	while (r > 0 && index_n == -1)
 	{
 		compute_buffer(&temp, fd, &r, buffer);
 		if (!temp && r == 0)
