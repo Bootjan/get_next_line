@@ -3,25 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/12 14:00:01 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 14:59:59 by bootjan          ###   ########.fr       */
+/*   Created: 2023/10/17 15:46:11 by bschaafs          #+#    #+#             */
+/*   Updated: 2023/10/17 17:51:22 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+char	*free_function(char **temp)
+{
+	if (*temp)
+		free(*temp);
+	*temp = NULL;
+	return (NULL);
+}
+
 size_t	ft_strlen(const char *s)
 {
-	size_t	i;
+	size_t	len;
 
 	if (!s)
 		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
 
 int	ft_strchr(const char *str, char c)
@@ -40,86 +48,49 @@ int	ft_strchr(const char *str, char c)
 	return (-1);
 }
 
-char	*clean_data(char **data)
+char	*ft_strdup(char *buffer)
 {
 	char	*out;
-	int		i;
-	int		index_n;
+	size_t	length;
+	size_t	i;
 
-	if (!*data)
+	length = ft_strlen(buffer);
+	if (length == 0)
 		return (NULL);
-	index_n = ft_strchr(*data, '\n');
-	i = ft_strlen(*data) - index_n - 1;
-	if (i == 0 || index_n == -1)
-	{
-		free(*data);
-		return (NULL);
-	}
-	out = malloc((i + 1) * sizeof(char));
+	out = malloc((length + 1) * SIZE_OF_CHAR);
 	if (!out)
-	{
-		free(*data);
 		return (NULL);
-	}
 	i = 0;
-	while ((*data)[index_n + 1])
-		out[i++] = (*data)[index_n++ + 1];
+	while (i < length)
+	{
+		out[i] = buffer[i];
+		i++;
+	}
 	out[i] = '\0';
-	free(*data);
 	return (out);
 }
 
-void	free_list(t_buffers **list, int i)
+char	*ft_strjoin(char **temp, char *buffer)
 {
-	t_buffers	*current;
-	t_buffers	*next;
+	char	*out;
+	size_t	length;
+	size_t	i;
+	size_t	j;
 
-	if (!*list)
-		return ;
-	current = *list;
-	while (current && (i < 0 || i > 1))
-	{
-		next = current->next;
-		if (current->data)
-			free(current->data);
-		free(current);
-		current = next;
-		i--;
-	}
-	if (current && i == 1)
-	{
-		current->data = clean_data(&current->data);
-		if (!current->data)
-		{
-			free(current);
-			current = NULL;
-		}
-	}
-	*list = current;
-}
-
-int	lpush_back(t_buffers **list, char *data)
-{
-	t_buffers	*elem;
-	t_buffers	*current;
-
-	elem = malloc(sizeof(t_buffers));
-	if (!elem)
-	{
-		free(data);
-		free_list(list, -1);
-		return (0);
-	}
-	elem->data = data;
-	elem->next = NULL;
-	current = *list;
-	if (!current)
-	{
-		*list = elem;
-		return (1);
-	}
-	while (current->next)
-		current = current->next;
-	current->next = elem;
-	return (1);
+	length = ft_strlen(*temp) + ft_strlen(buffer);
+	if (length == 0)
+		return (free_function(temp));
+	out = malloc((length + 1) * SIZE_OF_CHAR);
+	if (!out)
+		return (free_function(temp));
+	i = 0;
+	j = 0;
+	while ((*temp)[j])
+		out[i++] = (*temp)[j++];
+	j = 0;
+	while (buffer[j])
+		out[i++] = buffer[j++];
+	out[i] = '\0';
+	free_function(temp);
+	return (out);
 }

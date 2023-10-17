@@ -5,114 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/12 13:47:39 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/16 15:02:45 by bschaafs         ###   ########.fr       */
+/*   Created: 2023/10/17 15:41:05 by bschaafs          #+#    #+#             */
+/*   Updated: 2023/10/17 17:57:42 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*compute_buffer(t_buffers **list, int fd, int *r)
+static void	compute_buffer(char **temp, int fd, int *r, char buffer[])
 {
-	char	*buffer;
-
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-	{
-		free_list(list, -1);
-		return (NULL);
-	}
 	*r = read(fd, buffer, BUFFER_SIZE);
 	if (*r == -1)
 	{
-		free(buffer);
-		free_list(list, -1);
-		return (NULL);
+		free_function(temp);
+		return ;
 	}
 	if (*r == 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
+		return ;
 	buffer[*r] = '\0';
-	return (buffer);
 }
 
-char	*make_string(t_buffers **list, int elements, int length)
+static void	clean_temp(char **temp, int index_n)
 {
-	char		*out;
-	int			i;
-	int			j;
-	t_buffers	*current;
-	int			elems_done;
+	char	*out;
+	int		len;
+	int		i;
 
-	out = malloc((length + 1) * sizeof(char));
+	len = ft_strlen(*temp);
+	if (len == index_n)
+	{
+		free_function(temp);
+		return ;
+	}
+	out = malloc((len - index_n + 1) * SIZE_OF_CHAR);
 	if (!out)
 	{
-		free_list(list, -1);
-		return (NULL);
+		free_function(temp);
+		return ;
 	}
-	current = *list;
 	i = 0;
-	elems_done = 0;
-	while (current && elems_done++ < elements)
-	{
-		j = 0;
-		while (current->data[j] && i < length)
-			out[i++] = (char)current->data[j++];
-		current = current->next;
-	}
+	while (index_n < len)
+		out[i++] = (*temp)[index_n++];
 	out[i] = '\0';
-	free_list(list, elements);
-	return (out);
+	free_function(temp);
+	*temp = out;
 }
 
-char	*next_line(t_buffers **list)
+static char	*next_line(char **temp, int index_n)
 {
-	int			len;
-	t_buffers	*current;
-	int			contains_n;
-	int			index;
+	char	*out;
+	int		i;
 
-	if (!*list)
-		return (NULL);
-	index = 0;
-	len = 0;
-	current = *list;
-	while (current)
+	if (index_n == -1)
+		index_n = (int)ft_strlen(*temp);
+	else
+		index_n++;
+	if (index_n == 0)
+		return (free_function(temp));
+	out = malloc((index_n + 1) * SIZE_OF_CHAR);
+	if (!out)
+		return (free_function(temp));
+	i = 0;
+	while (i < index_n)
 	{
-		contains_n = ft_strchr(current->data, '\n');
-		if (contains_n >= 0)
-			return (make_string(list, index + 1, len + contains_n + 1));
-		len += ft_strlen(current->data);
-		current = current->next;
-		index++;
+		out[i] = (*temp)[i];
+		i++;
 	}
-	return (make_string(list, index, len));
+	out[i] = '\0';
+	clean_temp(temp, index_n);
+	return (out);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_buffers	*list;
-	char				*buffer;
-	int					r;
-	int					index_n;
+	static char	*temp;
+	char		buffer[BUFFER_SIZE + 1];
+	int			r;
+	int			index_n;
+	char		*ptr;
 
 	r = 1;
-	while (r)
+	index_n = ft_strchr(temp, '\n');
+	while (r && index_n == -1)
 	{
-		buffer = compute_buffer(&list, fd, &r);
-		if (!buffer && !list)
+		compute_buffer(&temp, fd, &r, buffer);
+		if (!temp && r == 0)
 			return (NULL);
-		if (!buffer || r == 0)
+		if (r == 0)
 			break ;
-		if (!lpush_back(&list, buffer))
-			return (NULL);
-		index_n = ft_strchr(buffer, '\n');
-		if (index_n >= 0)
-			break ;
+		ptr = buffer;
+		if (!temp)
+			temp = ft_strdup(ptr);
+		else
+			temp = ft_strjoin(&temp, ptr);
+		index_n = ft_strchr(temp, '\n');
 	}
-	return (next_line(&list));
+	return (next_line(&temp, index_n));
 }
 
 // #include <stdio.h>
@@ -120,14 +108,15 @@ char	*get_next_line(int fd)
 // int	main()
 // {
 // 	int fd = open("text.txt", O_RDONLY);
-// 	char *out;
-// 	int i = 0;
-// 	while (i++ < 12)
+// 	char *out = get_next_line(fd);
+// 	while (out)
 // 	{
-// 		out = get_next_line(fd);
-// 		printf("index: %i,  ;%s;\n", i, out);
+// 		printf("out: ;%s;\n", out);
 // 		if (out)
 // 			free(out);
+// 		out = get_next_line(fd);
 // 	}
+// 	if (out)
+// 		free(out);
 // 	close(fd);
 // }
