@@ -6,7 +6,7 @@
 /*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:48:21 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/17 17:57:33 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:21:26 by bschaafs         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 20
+#  define BUFFER_SIZE 5000
 # endif
 
-# define SIZE_OF_CHAR 8
+# define SIZE_OF_CHAR 1
 
 # include <unistd.h>
 # include <stdlib.h>
