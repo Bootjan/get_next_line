@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:46:11 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/17 17:51:22 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/12/16 23:09:47 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-int	ft_strchr(const char *str, char c)
+int	ft_contains_n(const char *str, char c)
 {
 	size_t	i;
 
@@ -48,7 +48,7 @@ int	ft_strchr(const char *str, char c)
 	return (-1);
 }
 
-char	*ft_strdup(char *buffer)
+char	*ft_tempdup(char *buffer)
 {
 	char	*out;
 	size_t	length;
@@ -70,7 +70,7 @@ char	*ft_strdup(char *buffer)
 	return (out);
 }
 
-char	*ft_strjoin(char **temp, char *buffer)
+char	*ft_tempjoin(char **temp, char *buffer)
 {
 	char	*out;
 	size_t	length;

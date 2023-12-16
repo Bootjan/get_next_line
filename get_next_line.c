@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bschaafs <bschaafs@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bootjan <bootjan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:41:05 by bschaafs          #+#    #+#             */
-/*   Updated: 2023/10/17 18:21:57 by bschaafs         ###   ########.fr       */
+/*   Updated: 2023/12/16 23:10:31 by bootjan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*get_next_line(int fd)
 	char		*ptr;
 
 	r = BUFFER_SIZE;
-	index_n = ft_strchr(temp, '\n');
+	index_n = ft_contains_n(temp, '\n');
 	while (r == BUFFER_SIZE && index_n == -1)
 	{
 		compute_buffer(&temp, fd, &r, buffer);
@@ -95,30 +95,11 @@ char	*get_next_line(int fd)
 			break ;
 		ptr = buffer;
 		if (!temp)
-			temp = ft_strdup(ptr);
+			temp = ft_tempdup(ptr);
 		else
-			temp = ft_strjoin(&temp, ptr);
-		index_n = ft_strchr(temp, '\n');
+			temp = ft_tempjoin(&temp, ptr);
+		index_n = ft_contains_n(temp, '\n');
 	}
 	return (next_line(&temp, index_n));
 }
 
-// #include <stdio.h>
-// #include <fcntl.h>
-// int	main()
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	char *out = get_next_line(fd);
-// 	// int i = 1;
-// 	while (out)
-// 	{
-// 		// printf("%i=out: ;%s;\n", i++, out);
-// 		if (out)
-// 			free(out);
-// 		out = get_next_line(fd);
-// 	}
-// 	// printf("%li\n", sizeof(char));
-// 	if (out)
-// 		free(out);
-// 	close(fd);
-// }
